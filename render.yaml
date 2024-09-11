@@ -1,5 +1,5 @@
 version: 1
 staticSites:
-  - name: example-site  # 必ずユニークな名前に変更
-    publishDirectory: ./  # HTMLファイルのあるパスに正しく設定
-    autoDeploy: true
+  - name: samo  # サイトの名前
+    publishDirectory: ./dist  # HTMLファイルが保存されているパス
+    autoDeploy: true  # コードがプッシュされるたびに再デプロイ
