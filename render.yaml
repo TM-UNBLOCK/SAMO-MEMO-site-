@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: SAMO
+    env: static
+    static_publish_path: /
+    build_command: ""
+    branch: main
