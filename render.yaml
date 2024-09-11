@@ -1,5 +1,5 @@
 version: 1
 staticSites:
-  - name: samo  # サイトの名前
-    publishDirectory: ./dist  # HTMLファイルが保存されているパス
-    autoDeploy: true  # コードがプッシュされるたびに再デプロイ
+  - name: samo  # プロジェクト名
+    publishDirectory: ./dist  # HTMLファイルのあるディレクトリ
+    autoDeploy: true  # 自動デプロイ
