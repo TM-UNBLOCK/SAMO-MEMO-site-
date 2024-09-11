@@ -1,6 +1,6 @@
 version: 1
 staticSites:
-  - name: SAMO  # サービスの名前
-    url: samo.com  # オプションのURL（例えば、`your-project-name.onrender.com`）
-    publishDirectory: ./  # HTMLファイルが保存されているディレクトリ
+  - name: samo  # サイトの名前
+    url: samo.onrender.com  # サイトのURL（適宜変更）
+    publishDirectory: ./  # 公開ディレクトリ（HTMLファイルがここにある場合）
     autoDeploy: true  # 自動デプロイを有効にする
