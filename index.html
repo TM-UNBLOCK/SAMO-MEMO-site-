@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>SAMO</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #6C63FF;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            border-bottom: 2px solid #ccc;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            resize: none;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .note {
+            background-color: #E8EAF6;
+            border-left: 5px solid #6C63FF;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 16px; 
+        }
+        .note-content {
+            flex-grow: 1; 
+            margin-right: 10px; 
+        }
+        button {
+            background-color: #6C63FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: 10px; 
+        }
+        button:hover {
+            background-color: #5A54D4;
+        }
+        .delete-button {
+            background-color: #FF5C5C;
+        }
+        .delete-button:hover {
+            background-color: #FF3B3B;
+        }
+        .save-button {
+            background-color: #4CAF50; 
+        }
+        .save-button:hover {
+            background-color: #45A049; 
+        }
+        .edit-button {
+            background-color: #FFA500; 
+        }
+        .edit-button:hover {
+            background-color: #FF8C00; 
+        }
+        .note-date {
+            font-size: 12px; 
+            color: #aaa; 
+            margin-left: 5px; 
+        }
+        .guide {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9fb;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .guide h2 {
+            color: #6C63FF;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .guide ul {
+            list-style: none;
+            padding: 0;
+        }
+        .guide ul li {
+            background: #E8EAF6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        .guide ul li:hover {
+            background: #D3CFFF; 
+        }
+        .github-button {
+            background-color: #333; /* GitHubの背景色 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            display: inline-block; 
+            margin-bottom: 20px; 
+        }
+        .github-button:hover {
+            background-color: #444; /* ホバー時の色 */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SAMO</h1>
+    </header>
+    <div class="container">
+        <a href="https://github.com/TM-UNBLOCK" class="github-button" target="_blank">GitHubプロフィール</a> <!-- GitHubプロフィールリンクボタン -->
+        <input type="text" id="titleInput" placeholder="メモのタイトル">
+        <textarea id="noteInput" placeholder="ここにメモを入力してください..."></textarea>
+        <button onclick="addNote()">メモ追加</button>
+        <div id="notesContainer"></div>
+    </div>
+
+    <div class="guide">
+        <h2>使い方</h2>
+        <ul>
+            <li>メモを追加するには、タイトルとテキストボックスにそれぞれ入力し、「メモ追加」ボタンをクリックします。</li>
+            <li>追加されたメモには「削除」ボタンと「保存」ボタンがあります。</li>
+            <li>「保存」ボタンを押すと、このメモだけをテキストファイルとして保存します。</li>
+            <li>「編集」ボタンを押すと、メモの内容を編集できるようになります。</li>
+        </ul>
+
+        <h2>注意点</h2>
+        <ul>
+            <li>メモはローカルストレージに保存されており、ブラウザを閉じても保持されます。</li>
+            <li>ローカルストレージはブラウザに依存しており、別のブラウザやプライベートモードではアクセスできません。</li>
+            <li>メモを保存する際、テキストファイルには選択したメモが保存されます。</li>
+            <li>ただし、完全にデータが保存できない可能性がありますので、重要な内容は別途バックアップを取ってください。</li>
+        </ul>
+    </div>
+
+    <script>
+        let currentEditingNote = null;
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            loadNotes();
+        });
+
+        function addNote() {
+            const titleInput = document.getElementById('titleInput');
+            const noteInput = document.getElementById('noteInput');
+            const noteText = noteInput.value.trim();
+            const titleText = titleInput.value.trim() || '無題'; 
+
+            if (noteText) {
+                const notes = getNotesFromStorage();
+                notes.push({ title: titleText, content: noteText, date: new Date().toLocaleDateString() });
+                localStorage.setItem('notes', JSON.stringify(notes));
+                displayNote(titleText, noteText, notes[notes.length - 1].date);
+                titleInput.value = ''; 
+                noteInput.value = ''; 
+                currentEditingNote = null; 
+            } else {
+                alert('メモが空です！');
+            }
+        }
+
+        function updateNote(oldTitle, newTitle, newContent) {
+            let notes = getNotesFromStorage();
+            notes = notes.map(note => {
+                if (note.title === oldTitle) {
+                    return { title: newTitle, content: newContent, date: note.date }; 
+                }
+                return note; 
+            });
+            localStorage.setItem('notes', JSON.stringify(notes)); 
+            loadNotes(); 
+        }
+
+        function saveNoteToFile(note) {
+            const blob = new Blob([note.content], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = note.title + '.txt'; 
+            link.click();
+            URL.revokeObjectURL(link.href); 
+        }
+
+        function loadNotes() {
+            const savedNotes = getNotesFromStorage();
+            const notesContainer = document.getElementById('notesContainer');
+            notesContainer.innerHTML = ''; 
+            savedNotes.forEach(note => {
+                displayNote(note.title, note.content, note.date);
+            });
+        }
+
+        function displayNote(title, content, date) {
+            const notesContainer = document.getElementById('notesContainer');
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'note';
+            
+            const noteContent = document.createElement('div');
+            noteContent.className = 'note-content';
+            const shortContent = content.length > 10 ? content.substring(0, 10) + '...' : content;
+            noteContent.innerHTML = `<strong>${title}</strong>: ${shortContent} <span class="note-date">${date}</span>`;
+            noteDiv.appendChild(noteContent);
+
+            const editButton = document.createElement('button');
+            editButton.className = 'edit-button';
+            editButton.textContent = '編集';
+            editButton.onclick = () => {
+                startEditing(title, content);
+            };
+
+            const saveButton = document.createElement('button');
+            saveButton.className = 'save-button';
+            saveButton.textContent = '保存';
+            saveButton.onclick = () => {
+                saveNoteToFile({ title, content });
+            };
+
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'delete-button';
+            deleteButton.textContent = '削除';
+            deleteButton.onclick = () => {
+                deleteNote(title, noteDiv);
+            };
+
+            noteDiv.appendChild(editButton);
+            noteDiv.appendChild(saveButton);
+            noteDiv.appendChild(deleteButton);
+            
+            notesContainer.appendChild(noteDiv);
+        }
+
+        function startEditing(title, content) {
+            const titleInput = document.getElementById('titleInput');
+            const noteInput = document.getElementById('noteInput');
+            titleInput.value = title;
+            noteInput.value = content;
+            currentEditingNote = title; 
+        }
+
+        function deleteNote(title, noteDiv) {
+            let notes = getNotesFromStorage();
+            notes = notes.filter(note => note.title !== title); 
+            localStorage.setItem('notes', JSON.stringify(notes));
+            noteDiv.remove(); 
+        }
+
+        function getNotesFromStorage() {
+            return JSON.parse(localStorage.getItem('notes')) || [];
+        }
+    </script>
+</body>
+</html>
