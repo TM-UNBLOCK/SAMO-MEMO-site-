@@ -1,11 +1,8 @@
 version: 1
 services:
-  - type: web
-    name: samo
-    env: node
-    plan: free
-    buildCommand: npm install
-    startCommand: npm start
-    envVars:
-      - key: NODE_ENV
-        value: production
+  - type: static
+    name: your-project-name  # サービスの名前
+    env: static
+    buildCommand: ""  # ビルドコマンド（必要ない場合は空）
+    staticPublishPath: ./  # 公開する静的ファイルのパス
+    autoDeploy: true  # 自動デプロイを有効にする
