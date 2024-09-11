@@ -1,6 +1,7 @@
 version: 1
 staticSites:
-  - name: samo  # サイトの名前
-    url: samo.onrender.com  # サイトのURL（適宜変更）
-    publishDirectory: ./  # 公開ディレクトリ（HTMLファイルがここにある場合）
-    autoDeploy: true  # 自動デプロイを有効にする
+  - name: samo  # サイト名
+    publishDirectory: ./build  # 公開するディレクトリ
+    autoDeploy: true
+    env:
+      NODE_ENV: production  # 必要に応じて環境変数をここに追加
