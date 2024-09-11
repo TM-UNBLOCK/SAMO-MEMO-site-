@@ -1,8 +1,6 @@
 version: 1
-services:
-  - type: static
-    name: SAMO  # サービスの名前
-    env: static
-    buildCommand: ""  # ビルドコマンド（必要ない場合は空）
-    staticPublishPath: ./  # 公開する静的ファイルのパス
+staticSites:
+  - name: SAMO  # サービスの名前
+    url: samo.com  # オプションのURL（例えば、`your-project-name.onrender.com`）
+    publishDirectory: ./  # HTMLファイルが保存されているディレクトリ
     autoDeploy: true  # 自動デプロイを有効にする
